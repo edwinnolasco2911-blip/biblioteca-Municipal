@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Biblioteca Municipal — Catálogo y Cultura</title>
+  <meta name="description" content="Prototipo académico de sitio web para una Biblioteca Municipal: catálogo de libros de ejemplo, reservas demostrativas y actividades culturales.">
+  <meta name="theme-color" content="#17324D">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <!-- ==========================================================
+       SPRITE DE ICONOS (SVG sencillos y coherentes).
+       Se usan con: <svg class="icon"><use href="#i-nombre"/></svg>
+       ========================================================== -->
+  <svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute">
+    <defs>
+      <!-- Logotipo TEMPORAL (libros). No es un logotipo institucional oficial. -->
+      <symbol id="i-logo" viewBox="0 0 32 32">
+        <rect x="3" y="9" width="7" height="17" rx="1.5" fill="#E9B44C"/>
+        <rect x="11.5" y="5" width="7" height="21" rx="1.5" fill="#F6F4EF"/>
+        <rect x="20" y="8" width="7" height="18" rx="1.5" fill="#7CC2BF"/>
+        <path d="M5.5 13v9M15 9v13M23.5 12v10" stroke="#17324D" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+        <path d="M2 29h28" stroke="#E9B44C" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </symbol>
+
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+      <symbol id="i-book-open" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+      <symbol id="i-calendario" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+      <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></symbol>
+      <symbol id="i-rotate" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+      <symbol id="i-alerta" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+      <symbol id="i-error" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+      <!-- Iconos de categorías -->
+      <symbol id="i-ciencia" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></symbol>
+      <symbol id="i-literatura" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+      <symbol id="i-historia" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V10M9 21V10M15 21V10M19 21V10"/><path d="M2 10l10-6 10 6z"/></symbol>
+      <symbol id="i-tecnologia" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+      <symbol id="i-educacion" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></symbol>
+      <symbol id="i-filosofia" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+
+  <!-- Aviso permanente de que es un prototipo -->
+  <div class="proto-banner" role="note">
+    <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+    <p><strong>Prototipo académico.</strong> Los libros, actividades y datos de esta página son ejemplos demostrativos y no provienen de la biblioteca.</p>
+  </div>
+
+  <!-- ==========================================================
+       A. ENCABEZADO Y NAVEGACIÓN
+       ========================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#inicio" aria-label="Biblioteca Municipal, ir al inicio">
+        <svg class="brand-logo" aria-hidden="true" focusable="false"><use href="#i-logo"/></svg>
+        <span class="brand-text">
+          <strong>Biblioteca Municipal</strong>
+          <small>Catálogo y Cultura</small>
+        </span>
+      </a>
+
+      <!-- Botón hamburguesa (solo visible en pantallas pequeñas) -->
+      <button class="nav-toggle" id="botonMenu" type="button"
+              aria-expanded="false" aria-controls="menuPrincipal" aria-label="Abrir menú de navegación">
+        <svg class="icon icono-menu" aria-hidden="true"><use href="#i-menu"/></svg>
+        <svg class="icon icono-cerrar" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+
+      <nav class="main-nav" id="menuPrincipal" aria-label="Navegación principal">
+        <ul>
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#catalogo">Catálogo</a></li>
+          <li><a href="#actividades">Actividades</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- ==========================================================
+         B. INICIO
+         ========================================================== -->
+    <section id="inicio" class="hero" aria-labelledby="titulo-inicio">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <p class="eyebrow">Catálogo y Cultura</p>
+          <h1 id="titulo-inicio">Descubre libros y actividades culturales de tu comunidad</h1>
+          <p class="lead">
+            La Biblioteca Municipal reúne la consulta bibliográfica, el préstamo de libros y las
+            actividades culturales. Explora el catálogo de ejemplo, busca por título o autor y conoce
+            las propuestas pensadas para lectores, estudiantes y familias.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#catalogo">Explorar catálogo</a>
+            <a class="btn btn-gold" href="#actividades">Ver actividades</a>
+          </div>
+        </div>
+
+        <!-- Ilustración sencilla: estante con libros y un libro abierto -->
+        <div class="hero-visual">
+          <svg class="hero-art" viewBox="0 0 480 380" role="img" aria-labelledby="arteHeroTitulo">
+            <title id="arteHeroTitulo">Ilustración de un estante con libros y un libro abierto</title>
+            <circle cx="240" cy="190" r="172" fill="#E9B44C" opacity=".18"/>
+            <circle cx="240" cy="190" r="120" fill="#287271" opacity=".10"/>
+            <!-- libros en el estante -->
+            <rect x="86" y="128" width="36" height="122" rx="3" fill="#287271"/>
+            <rect x="86" y="150" width="36" height="6" fill="#E9B44C"/>
+            <rect x="126" y="150" width="30" height="100" rx="3" fill="#E9B44C"/>
+            <rect x="126" y="172" width="30" height="5" fill="#17324D" opacity=".55"/>
+            <rect x="160" y="116" width="40" height="134" rx="3" fill="#17324D"/>
+            <rect x="160" y="136" width="40" height="5" fill="#E9B44C"/>
+            <rect x="160" y="226" width="40" height="5" fill="#E9B44C"/>
+            <rect x="204" y="160" width="28" height="90" rx="3" fill="#8E3B46"/>
+            <rect x="236" y="136" width="34" height="114" rx="3" fill="#7CC2BF"/>
+            <rect x="236" y="158" width="34" height="5" fill="#17324D" opacity=".55"/>
+            <g transform="rotate(12 330 250)">
+              <rect x="300" y="138" width="34" height="112" rx="3" fill="#E9B44C"/>
+              <rect x="300" y="160" width="34" height="5" fill="#287271"/>
+            </g>
+            <rect x="352" y="144" width="38" height="106" rx="3" fill="#287271"/>
+            <rect x="352" y="168" width="38" height="5" fill="#E9B44C"/>
+            <rect x="60" y="250" width="360" height="12" rx="4" fill="#17324D"/>
+            <!-- libro abierto -->
+            <path d="M240 296c-34-18-84-20-122-8v62c38-12 88-10 122 8z" fill="#FFFFFF" stroke="#17324D" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M240 296c34-18 84-20 122-8v62c-38-12-88-10-122 8z" fill="#FFFFFF" stroke="#17324D" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M240 296v62" stroke="#17324D" stroke-width="3"/>
+            <path d="M136 308c28-6 60-4 88 8M136 324c28-6 60-4 88 8M136 340c20-4 44-3 64 4" stroke="#287271" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M256 316c28-12 60-14 88-8M256 332c28-12 60-14 88-8M280 347c20-8 44-9 64-4" stroke="#287271" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <!-- marcapáginas -->
+            <path d="M226 296v36l8-6 8 6v-38z" fill="#E9B44C"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Beneficios / características -->
+      <div class="container features" aria-labelledby="titulo-destacado">
+        <h2 id="titulo-destacado" class="features-title">Lo más destacado</h2>
+        <ul class="feature-grid">
+          <li class="feature-card">
+            <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span>
+            <h3>Catálogo de libros</h3>
+            <p>Encuentra libros por título, autor o categoría y consulta su ficha completa.</p>
+            <a class="text-link" href="#catalogo">Ir al catálogo</a>
+          </li>
+          <li class="feature-card">
+            <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-calendario"/></svg></span>
+            <h3>Actividades culturales</h3>
+            <p>Conoce propuestas de lectura y de acercamiento a la biblioteca para toda la comunidad.</p>
+            <a class="text-link" href="#actividades">Ver actividades</a>
+          </li>
+          <li class="feature-card">
+            <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-users"/></svg></span>
+            <h3>Cercanía con la comunidad</h3>
+            <p>Un espacio para lectores, estudiantes y familias que quieren leer y aprender juntos.</p>
+            <a class="text-link" href="#contacto">Ver datos de contacto</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         C. CATÁLOGO DE LIBROS  (RF1, RF2, RF3, RF4)
+         ========================================================== -->
+    <section id="catalogo" class="section" aria-labelledby="titulo-catalogo">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Consulta bibliográfica</p>
+          <h2 id="titulo-catalogo">Catálogo de libros</h2>
+          <p class="section-intro">Busca por título o autor, filtra por categoría y abre la ficha completa de cada libro.</p>
+        </div>
+
+        <div class="note note-info" role="note">
+          <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+          <p><strong>Registros demostrativos.</strong> Los títulos, editoriales, ISBN y la disponibilidad son datos de ejemplo
+            no confirmados por la biblioteca. Las categorías también son ejemplos y no una clasificación oficial.</p>
+        </div>
+
+        <!-- Herramientas de búsqueda y filtro: funcionan juntas -->
+        <form class="catalog-tools" id="formularioFiltros" role="search" aria-label="Buscar y filtrar el catálogo" novalidate>
+          <div class="field">
+            <label for="campoBusqueda">Buscar por título o autor</label>
+            <input type="search" id="campoBusqueda" name="busqueda" placeholder="Ej.: Hawking, Quijote, Freire…" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="selectorCategoria">Categoría</label>
+            <select id="selectorCategoria" name="categoria">
+              <option value="">Todas las categorías</option>
+              <option value="Ciencia">Ciencia</option>
+              <option value="Literatura">Literatura</option>
+              <option value="Historia">Historia</option>
+              <option value="Tecnología">Tecnología</option>
+              <option value="Educación">Educación</option>
+              <option value="Filosofía">Filosofía</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-outline" id="botonRestablecer">
+            <svg class="icon" aria-hidden="true"><use href="#i-rotate"/></svg>
+            Restablecer filtros
+          </button>
+        </form>
+
+        <p class="results-info" id="infoResultados" role="status" aria-live="polite"></p>
+
+        <div class="book-grid" id="listaLibros"></div>
+
+        <!-- Estado: sin coincidencias -->
+        <div class="empty-state" id="sinResultados" hidden>
+          <svg class="icon empty-icon" aria-hidden="true"><use href="#i-search"/></svg>
+          <h3>No encontramos libros con esa búsqueda</h3>
+          <p>Revisa la ortografía, prueba con otro título o autor, o cambia la categoría seleccionada.</p>
+          <button type="button" class="btn btn-primary" id="botonRestablecerVacio">Restablecer búsqueda y filtros</button>
+        </div>
+
+        <noscript>
+          <div class="note note-warning"><p>Este catálogo necesita JavaScript activado para mostrar los libros de ejemplo.</p></div>
+        </noscript>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         D. SOLICITUD DE RESERVA  (RF5)
+         ========================================================== -->
+    <section id="reserva" class="section section-alt" aria-labelledby="titulo-reserva">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Demostración</p>
+          <h2 id="titulo-reserva">Solicitud de reserva</h2>
+          <p class="section-intro">Elige un libro y completa tus datos para probar cómo funcionaría una solicitud de reserva.</p>
+        </div>
+
+        <div class="note note-warning" role="note">
+          <svg class="icon" aria-hidden="true"><use href="#i-alerta"/></svg>
+          <p><strong>Esto es solo una demostración.</strong> La solicitud no se envía a la Biblioteca Municipal ni se reserva ningún libro.
+            Durante las pruebas usa <strong>datos ficticios</strong> (por ejemplo, “Ana Prueba” y “ana@ejemplo.com”). No escribas información personal real.</p>
+        </div>
+
+        <div class="form-layout">
+          <form class="card form-card" id="formularioReserva" novalidate>
+            <h3 class="form-title">Datos de la solicitud</h3>
+
+            <div class="field">
+              <label for="reservaLibro">Libro seleccionado <span class="req" aria-hidden="true">*</span></label>
+              <select id="reservaLibro" name="libro" required aria-describedby="reservaLibro-ayuda reservaLibro-error">
+                <option value="">Selecciona un libro…</option>
+              </select>
+              <p class="field-help" id="reservaLibro-ayuda">También puedes elegirlo con el botón “Reservar libro” del catálogo.</p>
+              <p class="field-error" id="reservaLibro-error" hidden></p>
+            </div>
+
+            <!-- Resumen del libro elegido: deja claro qué se está reservando -->
+            <div class="book-summary" id="resumenReserva" hidden aria-live="polite"></div>
+
+            <div class="field">
+              <label for="reservaNombre">Nombre del solicitante <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="reservaNombre" name="nombre" required autocomplete="off" placeholder="Nombre ficticio, ej.: Ana Prueba" aria-describedby="reservaNombre-error">
+              <p class="field-error" id="reservaNombre-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="reservaCorreo">Correo electrónico <span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="reservaCorreo" name="correo" required autocomplete="off" placeholder="ejemplo: ana@ejemplo.com" aria-describedby="reservaCorreo-error">
+              <p class="field-error" id="reservaCorreo-error" hidden></p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Enviar solicitud</button>
+            <div class="form-message" id="mensajeReserva" role="status" aria-live="polite"></div>
+          </form>
+
+          <aside class="card side-card" aria-labelledby="titulo-como-reserva">
+            <h3 id="titulo-como-reserva">¿Cómo funciona esta demostración?</h3>
+            <ol class="steps">
+              <li>Elige un libro en el catálogo o en la lista.</li>
+              <li>Escribe un nombre y un correo ficticios.</li>
+              <li>Pulsa “Enviar solicitud”: el sitio solo comprueba que los datos tengan sentido.</li>
+            </ol>
+            <p class="small-note">
+              No existe conexión con la biblioteca, con una base de datos ni con un servidor. No se guarda ningún dato
+              y la disponibilidad mostrada es solo un ejemplo.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         E. ACTIVIDADES CULTURALES  (RF6)
+         ========================================================== -->
+    <section id="actividades" class="section" aria-labelledby="titulo-actividades">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Agenda cultural</p>
+          <h2 id="titulo-actividades">Actividades culturales</h2>
+          <p class="section-intro">Tres propuestas de ejemplo para acercarte a la lectura y a la biblioteca.</p>
+        </div>
+
+        <div class="note note-info" role="note">
+          <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+          <p><strong>Actividades demostrativas.</strong> Las fechas, horarios, lugares y condiciones deben ser confirmados por la biblioteca.</p>
+        </div>
+
+        <div class="activity-grid" id="listaActividades"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         F. FORMULARIO DE INSCRIPCIÓN  (RF7)
+         ========================================================== -->
+    <section id="inscripcion" class="section section-alt" aria-labelledby="titulo-inscripcion">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Demostración</p>
+          <h2 id="titulo-inscripcion">Inscripción a una actividad</h2>
+          <p class="section-intro">Selecciona una actividad y completa el formulario para probar el registro.</p>
+        </div>
+
+        <div class="note note-warning" role="note">
+          <svg class="icon" aria-hidden="true"><use href="#i-alerta"/></svg>
+          <p><strong>Prueba local.</strong> La inscripción no se envía a la biblioteca ni se guardan datos. Usa <strong>datos ficticios</strong>.</p>
+        </div>
+
+        <div class="form-layout">
+          <form class="card form-card" id="formularioInscripcion" novalidate>
+            <h3 class="form-title">Datos de la inscripción</h3>
+
+            <div class="field">
+              <label for="inscripcionActividad">Actividad <span class="req" aria-hidden="true">*</span></label>
+              <select id="inscripcionActividad" name="actividad" required aria-describedby="inscripcionActividad-error">
+                <option value="">Selecciona una actividad…</option>
+              </select>
+              <p class="field-error" id="inscripcionActividad-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="inscripcionNombre">Nombre completo <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="inscripcionNombre" name="nombre" required autocomplete="off" placeholder="Nombre ficticio, ej.: Luis Ejemplo" aria-describedby="inscripcionNombre-error">
+              <p class="field-error" id="inscripcionNombre-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="inscripcionCorreo">Correo electrónico <span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="inscripcionCorreo" name="correo" required autocomplete="off" placeholder="ejemplo: luis@ejemplo.com" aria-describedby="inscripcionCorreo-error">
+              <p class="field-error" id="inscripcionCorreo-error" hidden></p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Registrar inscripción</button>
+            <div class="form-message" id="mensajeInscripcion" role="status" aria-live="polite"></div>
+          </form>
+
+          <aside class="card side-card" aria-labelledby="titulo-como-inscripcion">
+            <h3 id="titulo-como-inscripcion">Antes de probar</h3>
+            <ul class="check-list">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg> Al pulsar “Inscribirme” en una tarjeta, la actividad se marca aquí automáticamente.</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg> Todos los campos son obligatorios.</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg> El resultado es solo un aviso de prueba local.</li>
+            </ul>
+            <p class="small-note">Las fechas de las actividades figuran como “Por confirmar” porque aún no existe información oficial.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         G. CONTACTO  (datos pendientes: NO se inventan)
+         ========================================================== -->
+    <section id="contacto" class="section" aria-labelledby="titulo-contacto">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Contacto</p>
+          <h2 id="titulo-contacto">Contacto</h2>
+        </div>
+
+        <div class="contact-layout">
+          <div class="card contact-intro">
+            <h3>Biblioteca Municipal</h3>
+            <p>Espacio de consulta bibliográfica, préstamo de libros y actividades culturales para la comunidad.</p>
+            <div class="note note-warning note-compact" role="note">
+              <svg class="icon" aria-hidden="true"><use href="#i-alerta"/></svg>
+              <p>Los datos oficiales de contacto no figuran en el documento del proyecto. Deben ser confirmados con la institución antes de publicar el sitio.</p>
+            </div>
+          </div>
+
+          <ul class="contact-list">
+            <li class="contact-item">
+              <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-pin"/></svg></span>
+              <div><h3>Dirección</h3><p class="pending">Pendiente de confirmación por la institución</p></div>
+            </li>
+            <li class="contact-item">
+              <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-phone"/></svg></span>
+              <div><h3>Teléfono</h3><p class="pending">Pendiente de confirmación por la institución</p></div>
+            </li>
+            <li class="contact-item">
+              <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-mail"/></svg></span>
+              <div><h3>Correo electrónico</h3><p class="pending">Pendiente de confirmación por la institución</p></div>
+            </li>
+            <li class="contact-item">
+              <span class="feature-icon" aria-hidden="true"><svg class="icon"><use href="#i-clock"/></svg></span>
+              <div><h3>Horarios de atención</h3><p class="pending">Pendiente de confirmación por la institución</p></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================
+       H. PIE DE PÁGINA
+       ========================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <p class="footer-brand">
+          <svg class="brand-logo" aria-hidden="true" focusable="false"><use href="#i-logo"/></svg>
+          <strong>Biblioteca Municipal</strong>
+        </p>
+        <p class="footer-phrase">Leer es abrir una ventana al mundo y compartirla con los demás.</p>
+      </div>
+
+      <nav class="footer-col" aria-label="Enlaces del pie de página">
+        <h2 class="footer-title">Secciones</h2>
+        <ul class="footer-links">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#catalogo">Catálogo</a></li>
+          <li><a href="#actividades">Actividades</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h2 class="footer-title">Aviso</h2>
+        <p><strong>Prototipo académico.</strong> Este sitio es un proyecto educativo que funciona de forma local.</p>
+        <p>Los datos bibliográficos y de contacto deben verificarse con la biblioteca antes de una publicación oficial.</p>
+        <p>La administración de libros y la consulta de registros por el personal (RF8 y RF9) quedan pendientes para una fase posterior.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Biblioteca Municipal — Catálogo y Cultura · Proyecto académico, Fase II · Módulo Diseño y Desarrollo de Soluciones Web</p>
+    </div>
+  </footer>
+
+  <!-- ==========================================================
+       FICHA COMPLETA DEL LIBRO (ventana modal accesible)
+       ========================================================== -->
+  <dialog id="dialogoFicha" class="modal" aria-labelledby="fichaTitulo" aria-describedby="fichaSinopsis">
+    <div class="modal-inner">
+      <button type="button" class="modal-close" id="fichaCerrarX" aria-label="Cerrar ficha del libro">
+        <svg class="icon" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+      <div class="modal-layout">
+        <div class="modal-cover" id="fichaPortada"></div>
+        <div class="modal-body">
+          <p class="eyebrow" id="fichaCategoria"></p>
+          <h2 id="fichaTitulo"></h2>
+          <p class="modal-autor" id="fichaAutor"></p>
+          <p class="badge" id="fichaDisponibilidad"></p>
+
+          <h3>Sinopsis</h3>
+          <p id="fichaSinopsis"></p>
+
+          <dl class="ficha-datos">
+            <div><dt>Editorial</dt><dd id="fichaEditorial"></dd></div>
+            <div><dt>ISBN (de ejemplo)</dt><dd id="fichaIsbn"></dd></div>
+            <div><dt>Primera publicación</dt><dd id="fichaAnio"></dd></div>
+          </dl>
+
+          <p class="small-note">Registro demostrativo: la editorial, el ISBN y la disponibilidad no están confirmados por la biblioteca.</p>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-primary" id="fichaReservar">Reservar este libro</button>
+            <button type="button" class="btn btn-outline" id="fichaCerrar">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
